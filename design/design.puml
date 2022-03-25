@@ -1,0 +1,67 @@
+@startuml warehouse_database
+!define DARKBLUE
+!includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
+
+
+
+entity Driver{
+    id:pk
+    name:Charfield
+    id:number
+}
+
+
+entity VehicleCategory{
+    id : pk
+    vehicle_name : CharField
+    vehicle_description :  TextField
+   
+
+}
+
+entity Vehicle{
+    id:pk 
+    vehicle_category_id:FK(VehicleCategory)
+    vehicle_no_plate : Charfield
+    driver_id : FK(Driver)
+
+}
+
+Driver ||..|{ Vehicle
+
+
+entity ParkingSlots{
+    id:pk
+    parking_slot_no : int 
+    parking_slot_status : ChoiseField(0=availavle,1=occupied,2=reserved)
+    
+}
+
+VehicleCategory||..|{ Vehicle
+Driver||..|{ParkingSlots
+
+
+entity Event{
+    id:pk
+    vehicle_category_id:FK(VehicleCategory)
+    time : int(min)
+    loading:Boolean(false = "ofloading",true="Loading")
+
+}
+
+VehicleCategory||..|{ Event
+
+
+
+entity Queue{
+    id:pk
+    vehicle_id:FK(Vehicle)
+    event_id: FK(Event)
+    parking_slot_id : FK(ParkingSlots)
+    status = ChoiseField("Pending","Completed","Upcoming")
+}
+
+Vehicle ||..|{ Queue
+Event||..|{ Queue
+ParkingSlots||..|{ Queue
+@enduml
