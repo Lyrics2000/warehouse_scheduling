@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class VehicleCategory(models.Model):
@@ -69,3 +71,13 @@ class Queue(BaseModel):
 
     def __str__(self) -> str:
         return str(self.vehicle_id)
+
+
+
+@receiver(post_save, sender=Queue, dispatch_uid="create_queue")
+def update_stock(sender,created, instance, **kwargs):
+    if not created:
+        if instance.status == "COMPLETED":
+            parkin = ParkingSLots.objects.get(id =  instance.parking_slot_id.id)
+            parkin.parking_slot_available = True
+            parkin.save()
