@@ -9,7 +9,7 @@ class VehicleCategory(models.Model):
    
 ]
     vehicle_type = models.CharField(max_length=255,choices=VEHICLE_CHOICES,default="PICKUP")
-    vehicle_description = models.TextField()
+    
 
     def __str__(self) -> str:
         return self.vehicle_type
@@ -17,7 +17,6 @@ class VehicleCategory(models.Model):
 
 class Driver(models.Model):
     driver_name = models.CharField(max_length=255)
-    driver_id = models.BigIntegerField()
 
     def __str__(self) -> str:
         return self.driver_name
@@ -65,7 +64,7 @@ class Queue(BaseModel):
 ]
     vehicle_id = models.ForeignKey(Vehicle,on_delete=models.CASCADE)
     event_id = models.ForeignKey(Event,on_delete=models.CASCADE)
-    parking_slot_id = models.ForeignKey(ParkingSLots,on_delete=models.CASCADE)
+    parking_slot_id = models.ForeignKey(ParkingSLots,on_delete=models.CASCADE,blank=True,null=True)
     status = models.CharField(max_length=255,choices=QUEUE_CHOICES,default="PENDING")
 
     def __str__(self) -> str:
