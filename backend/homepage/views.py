@@ -30,7 +30,11 @@ def index(request):
         print(filter_quue)
         if len(filter_quue) > 0:# the system is not new as their are some cars that have been used for loading before
             random_slot = ParkingSLots.objects.filter(parking_slot_available = True).first()
+            
             if random_slot:# parking slot available
+                slot = ParkingSLots.objects.get(id = random_slot.id)
+                slot.parking_slot_available = False
+                slot.save()
                 queue = Queue.objects.create(
                     vehicle_id = vehicle,
                     event_id = event,
